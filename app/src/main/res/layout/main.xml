@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="第一个终点倒计时时间(分钟)"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/et_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="第二个终点倒计时时间(分钟)"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/et_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="第三个终点倒计时时间(分钟)"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/bt_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="上班" />
+
+    <Button
+        android:id="@+id/bt_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="下班" />
+
+    <Button
+        android:id="@+id/bt_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="知道了"
+        android:visibility="gone" />
+
+</LinearLayout>
