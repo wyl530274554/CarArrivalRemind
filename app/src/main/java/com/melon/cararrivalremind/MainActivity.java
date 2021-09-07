@@ -1,12 +1,17 @@
 package com.melon.cararrivalremind;
 
 import android.app.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.*;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.*;
 import android.view.View.*;
 import android.view.View;
+
+import androidx.annotation.RequiresApi;
 
 public class MainActivity extends Activity {
     EditText et1, et2, et3;
@@ -51,13 +56,9 @@ public class MainActivity extends Activity {
         mBt3.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 MediaUtil.stopRing();
-                mBt3.setVisibility(View.GONE);
             }
         });
     }
-
-    int count;
-    String countDown1, countDown2, countDown3;
 
     void timeDown() {
         mBt1.setEnabled(false);
@@ -84,64 +85,17 @@ public class MainActivity extends Activity {
         final int t2 = Integer.parseInt(time2);
         final int t3 = Integer.parseInt(time3);
 
-        /*
-        FIXME 这种处理，当手机休眠后，就被挂起了，所以不会生效（小米10s）
-         */
-        new Thread() {
-            public void run() {
-                while (count <= t3 * 60) {
-                    count++;
+        final int[] ts = new int[3];
+        ts[0] = t1;
+        ts[1] = t2;
+        ts[2] = t3;
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if ((t1 * 60 - count) > 0) {
-                                countDown1 = (t1 * 60 - count) / 60 + "分" + (t1 * 60 - count) % 60 + "秒";
-                            } else if ((t1 * 60 - count) == 0) {
-                                // 播放声音
-                                play();
-                            } else {
-                                countDown1 = "0分0秒";
-                            }
-
-                            if ((t2 * 60 - count) > 0) {
-                                countDown2 = (t2 * 60 - count) / 60 + "分" + (t2 * 60 - count) % 60 + "秒";
-                            } else if ((t2 * 60 - count) == 0) {
-                                // 播放声音
-                                play();
-                            } else {
-                                countDown2 = "0分0秒";
-                            }
-
-                            if ((t3 * 60 - count) > 0) {
-                                countDown3 = (t3 * 60 - count) / 60 + "分" + (t3 * 60 - count) % 60 + "秒";
-                            } else if ((t3 * 60 - count) == 0) {
-                                // 播放声音
-                                play();
-                            } else {
-                                countDown3 = "0分0秒";
-                            }
-
-                            et1.setText(countDown1);
-                            et2.setText(countDown2);
-                            et3.setText(countDown3);
-                        }
-                    });
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    Log.d("Melon", "count： " + count);
-                }
-                Log.d("Melon", "倒计时结束");
-            }
-        }.start();
-    }
-
-    private void play() {
-        MediaUtil.playRing(getApplicationContext());
-        mBt3.setVisibility(View.VISIBLE);
+        // 定时执行
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        for (int i = 0; i < 3; i++) {
+            PendingIntent pIntent = PendingIntent.getBroadcast(this, i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + ts[i] * 60 * 1000, pIntent);
+        }
     }
 }
