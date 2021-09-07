@@ -84,6 +84,9 @@ public class MainActivity extends Activity {
         final int t2 = Integer.parseInt(time2);
         final int t3 = Integer.parseInt(time3);
 
+        /*
+        FIXME 这种处理，当手机休眠后，就被挂起了，所以不会生效（小米10s）
+         */
         new Thread() {
             public void run() {
                 while (count <= t3 * 60) {
