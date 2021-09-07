@@ -79,6 +79,10 @@ public class MainActivity extends Activity {
             }
 
             time3 = "73";
+
+            et1.setText(time1);
+            et2.setText(time2);
+            et3.setText(time3);
         }
 
         final int t1 = Integer.parseInt(time1);
