@@ -15,6 +15,10 @@ public class MediaUtil {
     public static void playRing(Context context) {
         try {
             Log.d("Melon", "playRing");
+            if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+                return;
+            }
+
             //用于获取手机默认铃声的Uri
             Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
             mMediaPlayer = new MediaPlayer();
